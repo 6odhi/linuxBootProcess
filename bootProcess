@@ -1,0 +1,35 @@
+MAIN MEAT - Linux Booting process for an Embedded device 
+
+---Stage 1 (bootloader)-----
+	1. When the board is powered, control passes to a location called the "reset vector".
+	This is pre-programmed by the manufacturer on the board.
+
+	2. At the "reset vector", SoC's ROM bootloader exists. Then the ROM bootloader starts execution.
+
+	3.a. The primary function of the ROM bootloader is to setup some basic h/w and then start finding the "first stage bootloader" (MLO or SPL) from a boot device.
+	3.b. The "boot device" could be on a network, or a usb, or over a memory bus, or an sd card.
+	3.c. ROM bootloader decides the "boot device order" depending upon the h/w pin settings.
+
+----- Stage 2 (bootloader)-----	 
+	4. ROM bootloader loads the "first stage bootloader" from the boot device into internal SoC memory/internal RAM and passes control to it.
+
+----- Stage 3 (bootloader)-----
+	5.a The "first stage bootloader/MLO/SPL" finds the "second stage bootloader", copies it into the RAM and passes control to it.
+	5.b "Second stage bootloader"/uboot will in turn find the uEnv.txt and copy it into the ram.
+
+	6. Bootloading stages varies with the embedded hardware architecture. So the number of the bootloading stages can vary in number.
+	
+
+	7. The "second stage bootloader" reads it's configurational settings (which can be statically embedded or external file/uEnv.txt) and loads the `Linux Kernel` and `Device tree` into RAM.
+
+	8. Sets up the Kernel Boot Arguments
+
+---- Stage 4 (kernel)------
+
+	9. Then passes control to the Kernel which uses "Boot Args" and "Device tree address" to intialize itself and hardware devices.
+
+----- Stage 5 (User)-------
+
+	10. The kernel now uses it's "Kernel Boot Args" to locate the root filesystem and mounts it.
+	11. Kernel then searches the init process (PID 0) on that file system and then starts it.	This starts the userspace process.
+	12. The init process further spawns other userspace processes based on it's configurational files.
