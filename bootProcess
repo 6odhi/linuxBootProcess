@@ -31,5 +31,5 @@ MAIN MEAT - Linux Booting process for an Embedded device
 ----- Stage 5 (User)-------
 
 	10. The kernel now uses it's "Kernel Boot Args" to locate the root filesystem and mounts it.
-	11. Kernel then searches the init process (PID 0) on that file system and then starts it.	This starts the userspace process.
+	11. Kernel then searches the init process (PID 0) on that file system and then starts it. This starts the userspace process.
 	12. The init process further spawns other userspace processes based on it's configurational files.
